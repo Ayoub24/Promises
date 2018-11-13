@@ -19,13 +19,22 @@ let myPromise = (user) => {
                     resolve(repos);
                 } else resolve('Oops no repositorie found!');           
             }else if (request.readyState === 4 && request.status !== 200)
-                reject('Error : Invalid User');
+                reject('Error : Invalid User, The User <b id=user>'+ user + '</b> '+'Does not exist' );
         };
     });
     return promise;
 };
 
 let reposi = () => {
+    let errorMsg = document.getElementById('errorMsg');
+    if(errorMsg){
+        errorMsg.parentNode.removeChild(errorMsg);
+    };
+    let table = document.getElementById('table');
+    while(table.firstChild){
+        table.removeChild(table.firstChild);
+    };
+    
     let userRepo = document.getElementById('Text-User').value;
     
     myPromise(userRepo).then((message) => {
@@ -33,7 +42,7 @@ let reposi = () => {
             $("tbody").append('<tr><td>' + message[index][0] + '</td><td>' + message[index][1] + '</td><td>' + message[index][2] + '</td></tr>');
         });
     }).catch((error) => {
-        $('#form').append('<p>' + error + '</p>');
+        $('#form').append('<p id="errorMsg">' + error + '</p>');
     });
 };
 
